@@ -1,13 +1,13 @@
 library(ggplot2)
 library(scales)
 library(patchwork)
-library(pracma)#找峰值
+library(pracma)
 
-set.seed(123)  # 设置随机数种子
-t1<- rnorm(50, mean = 100, sd = 10)# t0基准onset of flowering 
-t2<- rnorm(50, mean = 150, sd = 10)# t0基准onset of flowering 
+set.seed(123) 
+t1<- rnorm(50, mean = 100, sd = 10)
+t2<- rnorm(50, mean = 150, sd = 10)
 t0_bi=c(t1,t2)
-t0_uni<- rnorm(100, mean = 150, sd = 10)# t0基准onset of flowering 
+t0_uni<- rnorm(100, mean = 150, sd = 10)
 alpha=1;beta=1;tem=290;k=8.62*10^(-5);E=0.65;cycle=10
 G=alpha*tem/(1+beta*tem)
 
@@ -46,7 +46,7 @@ t0=t0_bi;rh=30;tG=200 # grazing time
 tf=matrix(nrow = cycle,ncol = 100);t_op=NA
 for (j in 1:cycle){
 for (i in 1:100){
-  if(is.na(t0[i])){next #如果是NA，进入下一个循环
+  if(is.na(t0[i])){next #
   }else if(t0[i]<tG){
    RHO=-1*rh
    tf[j,i]=t0[i]-exp(-E/(k*tem))+RHO*G
@@ -65,7 +65,7 @@ df=na.omit(df)
 result_sigbi=list();peakTbi <- data.frame()
 for (i in 1:j){
   sub_df=subset(df,df$Generation==i)
-  result_sigbi[[i]]=wilcox.test( sub_df$flower, t0_bi, exact = FALSE)#检验两组中值差异显著性 Mann-Whitney U检验（两个独立样本）
+  result_sigbi[[i]]=wilcox.test( sub_df$flower, t0_bi, exact = FALSE)
   print(median(sub_df$flower))
   pdf_obj=density(sub_df$flower)
   peak_indices=findpeaks(pdf_obj$y, npeaks=5,minpeakheight  = 0.0015, minpeakdistance = 1,sortstr=TRUE)
@@ -136,7 +136,7 @@ t0=t0_uni;rh=10;tG=145;cycle=4 # grazing time
 tf=matrix(nrow = cycle,ncol = 100);t_op=NA
 for (j in 1:cycle){
   for (i in 1:100){
-    if(is.na(t0[i])){next #如果是NA，进入下一个循环
+    if(is.na(t0[i])){next 
     }else if(t0[i]<tG){
       RHO=-1*rh
       tf[j,i]=t0[i]-exp(-E/(k*tem))+RHO*G
@@ -155,7 +155,7 @@ df=na.omit(df)
 result_siguni=list();peakTuni <- data.frame()
 for (i in 1:j){
   sub_df=subset(df,df$Generation==i)
-  result_siguni[[i]]=wilcox.test( sub_df$flower, t0_uni, exact = FALSE)#检验两组中值差异显著性 Mann-Whitney U检验（两个独立样本）
+  result_siguni[[i]]=wilcox.test( sub_df$flower, t0_uni, exact = FALSE)
   print(median(sub_df$flower))
   pdf_obj=density(sub_df$flower)
   peak_indices=findpeaks(pdf_obj$y, npeaks=5,minpeakheight  = 0.0015, minpeakdistance = 1,sortstr=TRUE)
@@ -196,4 +196,5 @@ OUTFIG
 result_sigbi
 result_siguni
 peakTbi
+
 peakTuni
